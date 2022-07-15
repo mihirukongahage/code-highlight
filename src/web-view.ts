@@ -1,5 +1,9 @@
 import { RenderContent } from "./types/render-content";
 
+/**
+ * Web view for the saved codes
+ * @param content  
+ */
 export default function getWebviewContent(content: RenderContent) {
   return `<!DOCTYPE html>
   <html lang="en">
