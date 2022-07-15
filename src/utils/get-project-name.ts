@@ -1,5 +1,8 @@
 import * as vscode from 'vscode';
 
+/**
+ * returns the active project name
+ */
 function getProjectName(): string | null {
     const workspacePath = vscode.workspace.workspaceFolders;
 

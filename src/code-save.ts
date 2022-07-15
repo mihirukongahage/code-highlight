@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+// TODO: Add this as a util function
 function getSavePath(urlString: readonly vscode.WorkspaceFolder[], fileName: string): vscode.Uri {
     let pathArray = urlString[0].uri.path;
     let projectPath = pathArray.split('/');
@@ -9,6 +10,9 @@ function getSavePath(urlString: readonly vscode.WorkspaceFolder[], fileName: str
     return pathUri;
 }
 
+/**
+ * Save code segments
+ */
 let disposable = vscode.commands.registerCommand('code-save.saveCode', async () => {
     const activeEditor = vscode.window.activeTextEditor;
     const workspacePath = vscode.workspace.workspaceFolders;

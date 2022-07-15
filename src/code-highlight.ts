@@ -1,32 +1,40 @@
 import * as vscode from 'vscode';
+import utils from './utils';
+const crypto = require('crypto');
 
-let disposable = vscode.commands.registerCommand('code-save.highlight', async () => {
-    const activeEditor = vscode.window.activeTextEditor;
+/**
+ * Highlight the selected code segment
+ * @param context 
+ */
+const highlight = (context: vscode.ExtensionContext) => {
 
-    if (activeEditor) {
-
-        let position = activeEditor.selection;
-
+    let disposable = vscode.commands.registerCommand('code-save.highlight', async () => {
+        const activeEditor = vscode.window.activeTextEditor;
+        
+        let selectedRange = activeEditor?.selection;
         const range = {
-            startCharacter: position.start.character,
-            startLine: position.start.line,
-            endCharacter: position.end.character,
-            endLine: position.end.line
+            startCharacter: selectedRange?.start.character,
+            startLine: selectedRange?.start.line,
+            endCharacter: selectedRange?.end.character,
+            endLine: selectedRange?.end.line
         };
 
-        const decoration = [{ range: new vscode.Range(range.startLine, range.startCharacter, 
-            range.endLine, range.endCharacter) }];
+        /**
+         * Store highlighted range in vscode local workspace as a key value pair
+         * k: hashed file path, v: Range object 
+         */
+        let filePath = activeEditor?.document.uri.fsPath;
+        let hashedFilePath = crypto.createHash('sha1').update(filePath).digest('hex');
+        context.workspaceState.update(hashedFilePath, range);
 
-        const options = {
-            backgroundColor: "red",
-        };
-        const decorationType = vscode.window.createTextEditorDecorationType(options);
+        /**
+         * Apply the ui changes to the given range
+         */
+        utils.decorateRange(range);
+    });
 
-        activeEditor.setDecorations(decorationType, decoration);
-   
-    } else {
-        vscode.window.showInformationMessage('Active editor not found');
-    }
-});
+    return disposable;
+};
 
-export default disposable;
+
+export default highlight;

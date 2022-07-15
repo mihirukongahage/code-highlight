@@ -1,5 +1,8 @@
 import * as vscode from 'vscode';
 
+/**
+ * returns the path for the project root
+ */
 function getProjectRootPath(): string | null {
     const workspacePath = vscode.workspace.workspaceFolders;
 
