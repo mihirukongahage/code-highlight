@@ -35,7 +35,19 @@
 				"command": "code-save.removeAllHighlights",
 				"title": "Remove All Highlights"
 			}
-		]
+		],
+		"keybindings": [
+            {
+                "command": "code-save.highlight",
+                "key": "ctrl+alt+l",
+                "mac": "shift+cmd+l"
+            },
+			{
+                "command": "code-save.removeHighlight",
+                "key": "ctrl+alt+k",
+                "mac": "shift+cmd+k"
+            }
+        ]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
