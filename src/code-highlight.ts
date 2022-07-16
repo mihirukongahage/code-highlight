@@ -11,8 +11,7 @@ const highlight = (context: vscode.ExtensionContext) => {
 
     // Highlight selected code segments
     let highlight = vscode.commands.registerCommand('code-save.highlight', async () => {
-        const activeEditor = vscode.window.activeTextEditor;
-        
+        const activeEditor = vscode.window.activeTextEditor;  
         let selectedRange = activeEditor?.selection;
         const range: Range = {
             startCharacter: selectedRange?.start.character,
@@ -29,6 +28,7 @@ const highlight = (context: vscode.ExtensionContext) => {
         let hashedFilePath = crypto.createHash('sha1').update(filePath).digest('hex');
 
         let savedRangeArray = context.workspaceState.get(hashedFilePath, '');
+
         let rangeArray: string[] = [];
         if(savedRangeArray !== '') {
             rangeArray = JSON.parse(savedRangeArray);
@@ -48,7 +48,6 @@ const highlight = (context: vscode.ExtensionContext) => {
     // Remove highlights
     let removeHighlight = vscode.commands.registerCommand('code-save.removeHighlight', async () => {
         const activeEditor = vscode.window.activeTextEditor;
-        
         // Current cursor position
         let cursorPosition = activeEditor?.selection.active;
 
@@ -88,11 +87,27 @@ const highlight = (context: vscode.ExtensionContext) => {
         parsedSavedRangeArray.splice(index, 1);
 
         // Store the ranges in the workspace storage
-        context.workspaceState.update(hashedFilePath, JSON.stringify(parsedSavedRangeArray));
+        await context.workspaceState.update(hashedFilePath, JSON.stringify(parsedSavedRangeArray));
+
+        // Reload workspace 
+        vscode.commands.executeCommand('workbench.action.reloadWindow');
 
     });
 
-    return {highlight, removeHighlight};
+    // Remove all highligted code segments for a file
+    let removeAllHighlight = vscode.commands.registerCommand('code-save.removeAllHighlights', async () => {        
+        const activeEditor = vscode.window.activeTextEditor;
+        let filePath = activeEditor?.document.uri.fsPath;
+        let hashedFilePath = crypto.createHash('sha1').update(filePath).digest('hex');
+        
+        // Remove all workspace storage for the file
+        context.workspaceState.update(hashedFilePath, '');
+
+        // Reload workspace 
+        vscode.commands.executeCommand('workbench.action.reloadWindow');
+    });
+
+    return { highlight, removeHighlight, removeAllHighlight };
 };
 
 export default highlight;
