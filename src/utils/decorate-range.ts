@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 const decorateRange = (range: Range) => {
     const activeEditor = vscode.window.activeTextEditor;
 
-    const decoration = [{ range: new vscode.Range(range.startLine, range.startCharacter, range.endLine, range.endCharacter) }];
+    const decoration = [{ range: new vscode.Range(range.startLine  || 0, range.startCharacter || 0, range.endLine  || 0, range.endCharacter  || 0) }];
     const options = {
         backgroundColor: "red",
     };

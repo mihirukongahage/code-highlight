@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
      * Highlight selected code segment 
      */
     let codeHighlight = highlight(context);
-    context.subscriptions.push(codeHighlight);
+    context.subscriptions.push(codeHighlight.highlight);
 
     context.subscriptions.push(codeSave);
     context.subscriptions.push(viewCode);
@@ -25,22 +25,12 @@ export function activate(context: vscode.ExtensionContext) {
         let filePath = vscode.window.activeTextEditor?.document.uri.fsPath;
         let hashedFilePath = crypto.createHash('sha1').update(filePath).digest('hex');
 
-        let range = context.workspaceState.get(hashedFilePath, {
-            startCharacter: 0,
-            startLine: 0,
-            endCharacter: 0,
-            endLine: 0
+        let range = context.workspaceState.get(hashedFilePath, '');
+        JSON.parse(range).forEach((element: any) => {
+            // Apply the ui changes to the given range
+            utils.decorateRange(JSON.parse(element));
+            });
         });
-
-        /**
-         * Apply the ui changes to the given range
-         */
-        utils.decorateRange(range);
-    });
-
-
-
-
 }
 
 export function deactivate() {}
