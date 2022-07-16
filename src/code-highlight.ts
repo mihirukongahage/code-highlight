@@ -3,11 +3,13 @@ import utils from './utils';
 const crypto = require('crypto');
 
 /**
- * Highlight the selected code segment
+ * Highlight the selected code segments
+ * Remove the highlighted code segments
  * @param context 
  */
 const highlight = (context: vscode.ExtensionContext) => {
 
+    // Highlight selected code segments
     let highlight = vscode.commands.registerCommand('code-save.highlight', async () => {
         const activeEditor = vscode.window.activeTextEditor;
         
@@ -43,7 +45,54 @@ const highlight = (context: vscode.ExtensionContext) => {
         });
     });
 
-    return {highlight};
+    // Remove highlights
+    let removeHighlight = vscode.commands.registerCommand('code-save.removeHighlight', async () => {
+        const activeEditor = vscode.window.activeTextEditor;
+        
+        // Current cursor position
+        let cursorPosition = activeEditor?.selection.active;
+
+        let filePath = activeEditor?.document.uri.fsPath;
+        let hashedFilePath = crypto.createHash('sha1').update(filePath).digest('hex');
+        let savedRangeArray = context.workspaceState.get(hashedFilePath, '');
+
+        let parsedSavedRangeArray = JSON.parse(savedRangeArray);
+
+        let i = 0;
+        let index = null;
+        parsedSavedRangeArray.forEach((singleRangeString: string) => {
+            let singleRange = JSON.parse(singleRangeString);
+
+            if (!cursorPosition) {
+                return {};
+            }
+            let cursorPositionOffset = activeEditor?.document.offsetAt(cursorPosition);
+
+            // Start and End selected position
+            let rangeStartPosition = new vscode.Position(singleRange.startLine, singleRange.startCharacter); 
+            let rangeEndPosition = new vscode.Position(singleRange.endLine, singleRange.endCharacter);
+
+            let rangeStartPositionOffset = activeEditor?.document.offsetAt(rangeStartPosition);
+            let rangeEndPositionOffset = activeEditor?.document.offsetAt(rangeEndPosition);
+
+            if (cursorPositionOffset && rangeStartPositionOffset && rangeEndPositionOffset && cursorPositionOffset >= rangeStartPositionOffset && cursorPositionOffset <= rangeEndPositionOffset) {
+                index = i;
+            }
+            i = i + 1;
+        });
+
+        if (index === null) {
+            vscode.window.showInformationMessage('Cursor not on highlighted code');
+            return {};
+        }
+        parsedSavedRangeArray.splice(index, 1);
+
+        // Store the ranges in the workspace storage
+        context.workspaceState.update(hashedFilePath, JSON.stringify(parsedSavedRangeArray));
+
+    });
+
+    return {highlight, removeHighlight};
 };
 
 export default highlight;
