@@ -14,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
     let codeHighlight = highlight(context);
     context.subscriptions.push(codeHighlight.highlight);
     context.subscriptions.push(codeHighlight.removeHighlight);
+    context.subscriptions.push(codeHighlight.removeAllHighlight);
 
     context.subscriptions.push(codeSave);
     context.subscriptions.push(viewCode);
@@ -30,8 +31,21 @@ export function activate(context: vscode.ExtensionContext) {
         JSON.parse(range).forEach((element: string) => {
             // Apply the ui changes to the given range
             utils.decorateRange(JSON.parse(element));
-            });
         });
+    }); 
+    
+    vscode.workspace.onDidOpenTextDocument(() => {
+        let filePath = vscode.window.activeTextEditor?.document.uri.fsPath;
+        let hashedFilePath = crypto.createHash('sha1').update(filePath).digest('hex');
+
+        let range = context.workspaceState.get(hashedFilePath, '');
+        JSON.parse(range).forEach((element: string) => {
+            // Apply the ui changes to the given range
+            utils.decorateRange(JSON.parse(element));
+        });
+    });
+
+
 }
 
 export function deactivate() {}

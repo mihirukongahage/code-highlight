@@ -30,6 +30,10 @@
 			{
 				"command": "code-save.removeHighlight",
 				"title": "Remove Highlight"
+			},
+			{
+				"command": "code-save.removeAllHighlights",
+				"title": "Remove All Highlights"
 			}
 		]
 	},
