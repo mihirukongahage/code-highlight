@@ -26,6 +26,10 @@
 			{
 				"command": "code-save.highlight",
 				"title": "Highlight"
+			},
+			{
+				"command": "code-save.removeHighlight",
+				"title": "Remove Highlight"
 			}
 		]
 	},
