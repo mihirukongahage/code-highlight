@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+const fs = require('fs');
 
 // TODO: Add this as a util function
 function getSavePath(urlString: readonly vscode.WorkspaceFolder[], fileName: string): vscode.Uri {
@@ -16,6 +17,9 @@ function getSavePath(urlString: readonly vscode.WorkspaceFolder[], fileName: str
 let disposable = vscode.commands.registerCommand('code-save.saveCode', async () => {
     const activeEditor = vscode.window.activeTextEditor;
     const workspacePath = vscode.workspace.workspaceFolders;
+    if (!workspacePath) {
+        return {};
+    }
 
     if (activeEditor) {
 
@@ -43,11 +47,23 @@ let disposable = vscode.commands.registerCommand('code-save.saveCode', async () 
         let dateTime = new Date();
 
         // Data to be written
-        let data = `File Name: ${fileName} \nFile Path: ${filePath} \nLanguage: ${language} \nDatetime: ${dateTime} \nComment: ${comment} \n\n${codeSnippet}`;
-        const writeData = Buffer.from(data, 'utf8');
+        const newSaveString = `----------------------------------------`;        
 
         // Write data to the file
-        if (workspacePath && fileName) {
+        if (fileName) {
+
+            let data;
+            if (fs.existsSync(getSavePath(workspacePath, fileName).path)) {
+                let savedFile = await vscode.workspace.fs.readFile(getSavePath(workspacePath, fileName)).then((data) => {
+                    return data.toString();
+                });
+                data = `${savedFile}\n\n\n${newSaveString}\nDatetime: ${dateTime}\nComment: ${comment}\n\n${codeSnippet}`;
+                
+            } else {
+                data = `File Name: ${fileName}\nFile Path: ${filePath}\nLanguage: ${language}\n\n\n${newSaveString}\nDatetime: ${dateTime}\nComment: ${comment}\n\n${codeSnippet}`;
+            }
+
+            const writeData = Buffer.from(data, 'utf8');
             vscode.workspace.fs.writeFile(getSavePath(workspacePath, fileName), writeData);
             vscode.window.showInformationMessage('Code Saved');
         } else {
