@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { endSaveString, newSaveString } from './types/const';
 const fs = require('fs');
 
 // TODO: Add this as a util function
@@ -46,9 +47,6 @@ let disposable = vscode.commands.registerCommand('code-save.saveCode', async () 
         // Date and time
         let dateTime = new Date();
 
-        // Data to be written
-        const newSaveString = `----------------------------------------`;        
-
         // Write data to the file
         if (fileName) {
 
@@ -57,10 +55,10 @@ let disposable = vscode.commands.registerCommand('code-save.saveCode', async () 
                 let savedFile = await vscode.workspace.fs.readFile(getSavePath(workspacePath, fileName)).then((data) => {
                     return data.toString();
                 });
-                data = `${savedFile}\n\n\n${newSaveString}\nDatetime: ${dateTime}\nComment: ${comment}\n\n${codeSnippet}`;
+                data = `${savedFile}\n\n\n${newSaveString}\nDatetime: ${dateTime}\nComment: ${comment}\n\n${codeSnippet}\n${endSaveString}`;
                 
             } else {
-                data = `File Name: ${fileName}\nFile Path: ${filePath}\nLanguage: ${language}\n\n\n${newSaveString}\nDatetime: ${dateTime}\nComment: ${comment}\n\n${codeSnippet}`;
+                data = `File Name: ${fileName}\nFile Path: ${filePath}\nLanguage: ${language}\n\n\n${newSaveString}\nDatetime: ${dateTime}\nComment: ${comment}\n\n${codeSnippet}\n${endSaveString}`;
             }
 
             const writeData = Buffer.from(data, 'utf8');

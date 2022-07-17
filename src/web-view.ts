@@ -1,10 +1,25 @@
-import { RenderContent } from "./types/render-content";
+import { SaveObject } from "./types/save-object";
 
 /**
  * Web view for the saved codes
  * @param content  
  */
-export default function getWebviewContent(content: RenderContent) {
+export default function getWebviewContent(content: SaveObject) {
+
+    var innerHtml = '';
+    content.save.forEach(element => {
+        innerHtml += `
+            <div> ${element.dateTime} </div>
+            <div> ${element.comment} </div>
+            <pre class="line-numbers">
+                <code class="language-javascript">
+                    <div"> ${element.code} </div>
+                </code>
+            </pre>
+        `;
+    });
+
+
   return `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -36,11 +51,9 @@ export default function getWebviewContent(content: RenderContent) {
             <h4>${content.fileName}</h4>
             <h4>${content.filePath}</h4>
             <h4>${content.language}</h4>
-            <h4>${content.dateTime}</h4>
-            <h4>${content.comment}</h4>
-            <pre class="line-numbers">
-                <code class="language-javascript">${content.code}</code>
-            </pre>
+
+            <div>${innerHtml}</div>
+
         </div>
     </div>
   </body>
