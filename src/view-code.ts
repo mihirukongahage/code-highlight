@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import webView from './web-view';
 import util from './utils';
 const fs = require('fs');
-import { RenderContent } from "./types/render-content";
 
 /**
  * View code in a separate web view within vscode
@@ -25,16 +24,8 @@ let disposable = vscode.commands.registerCommand('code-save.viewCode', async () 
         vscode.window.showInformationMessage('No saved code for this file');
     }
 
-    let fileContentArray = fileContent.split('\n');
-
-    let content: RenderContent = {
-        fileName: fileContentArray[0],
-        filePath: fileContentArray[1],
-        language: fileContentArray[2],
-        dateTime: fileContentArray[3],
-        comment: fileContentArray[4],
-        code: fileContentArray.slice(6).join('\n')
-    };
+    // Get display content
+    let content = util.extractContent(fileContent);
 
     /**
      * View the web content
