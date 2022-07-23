@@ -1,8 +1,12 @@
 {
-  "name": "code-highlight",
+  	"name": "code-highlight",
 	"displayName": "Code Highlight",
+	"publisher":"MihiruKongahage",
+	"author": {
+		"name": "Mihiru Kongahage"
+	},
 	"description": "",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.68.0"
 	},
