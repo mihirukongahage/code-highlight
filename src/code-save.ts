@@ -15,7 +15,7 @@ function getSavePath(urlString: readonly vscode.WorkspaceFolder[], fileName: str
 /**
  * Save code segments
  */
-let disposable = vscode.commands.registerCommand('code-save.saveCode', async () => {
+let disposable = vscode.commands.registerCommand('code-highlight.saveCode', async () => {
     const activeEditor = vscode.window.activeTextEditor;
     const workspacePath = vscode.workspace.workspaceFolders;
     if (!workspacePath) {

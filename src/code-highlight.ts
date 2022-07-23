@@ -95,7 +95,7 @@ const highlight = (context: vscode.ExtensionContext) => {
     });
 
     // Remove all highligted code segments for a file
-    let removeAllHighlight = vscode.commands.registerCommand('code-save.removeAllHighlights', async () => {        
+    let removeAllHighlight = vscode.commands.registerCommand('code-highlight.removeAllHighlights', async () => {        
         const activeEditor = vscode.window.activeTextEditor;
         let filePath = activeEditor?.document.uri.fsPath;
         let hashedFilePath = crypto.createHash('sha1').update(filePath).digest('hex');
