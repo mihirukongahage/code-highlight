@@ -2,13 +2,12 @@ import { SaveObject } from "./types/save-object";
 
 /**
  * Web view for the saved codes
- * @param content  
+ * @param content
  */
 export default function getWebviewContent(content: SaveObject) {
-
-    var innerHtml = '';
-    content.save.forEach(element => {
-        innerHtml += `
+  var innerHtml = "";
+  content.save.forEach((element) => {
+    innerHtml += `
         <div class="segment">
             <table class="tab">
                 <tr>
@@ -29,8 +28,7 @@ export default function getWebviewContent(content: SaveObject) {
             </pre>
         </div>
         `;
-    });
-
+  });
 
   return `<!DOCTYPE html>
   <html lang="en">

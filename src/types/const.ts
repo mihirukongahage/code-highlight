@@ -1,3 +1,3 @@
 export const newSaveString = `-------------------------------------BEGIN--`;
 
-export const endSaveString = `-------------------------------------END--`; 
+export const endSaveString = `-------------------------------------END--`;
