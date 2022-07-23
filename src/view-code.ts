@@ -6,7 +6,7 @@ const fs = require('fs');
 /**
  * View code in a separate web view within vscode
  */
-let disposable = vscode.commands.registerCommand('code-save.viewCode', async () => {
+let disposable = vscode.commands.registerCommand('code-highlight.viewCode', async () => {
 
     const activeEditor = vscode.window.activeTextEditor;
 

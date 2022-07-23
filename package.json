@@ -1,6 +1,6 @@
 {
-  "name": "code-save",
-	"displayName": "Code Save",
+  "name": "code-highlight",
+	"displayName": "Code Highlight",
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
@@ -16,23 +16,23 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "code-save.saveCode",
+				"command": "code-highlight.saveCode",
 				"title": "Save Code"
 			},
 			{
-				"command": "code-save.viewCode",
+				"command": "code-highlight.viewCode",
 				"title": "View Code"
 			},
 			{
-				"command": "code-save.highlight",
+				"command": "code-highlight.highlight",
 				"title": "Highlight"
 			},
 			{
-				"command": "code-save.removeHighlight",
+				"command": "code-highlight.removeHighlight",
 				"title": "Remove Highlight"
 			},
 			{
-				"command": "code-save.removeAllHighlights",
+				"command": "code-highlight.removeAllHighlights",
 				"title": "Remove All Highlights"
 			}
 		],
