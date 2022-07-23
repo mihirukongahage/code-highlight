@@ -1,8 +1,12 @@
 {
-  "name": "code-save",
-	"displayName": "Code Save",
+  	"name": "code-highlight",
+	"displayName": "Code Highlight",
+	"publisher":"MihiruKongahage",
+	"author": {
+		"name": "Mihiru Kongahage"
+	},
 	"description": "",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.68.0"
 	},
@@ -16,18 +20,38 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "code-save.saveCode",
+				"command": "code-highlight.saveCode",
 				"title": "Save Code"
 			},
 			{
-				"command": "code-save.viewCode",
+				"command": "code-highlight.viewCode",
 				"title": "View Code"
 			},
 			{
-				"command": "code-save.highlight",
+				"command": "code-highlight.highlight",
 				"title": "Highlight"
+			},
+			{
+				"command": "code-highlight.removeHighlight",
+				"title": "Remove Highlight"
+			},
+			{
+				"command": "code-highlight.removeAllHighlights",
+				"title": "Remove All Highlights"
 			}
-		]
+		],
+		"keybindings": [
+            {
+                "command": "code-save.highlight",
+                "key": "ctrl+alt+l",
+                "mac": "shift+cmd+l"
+            },
+			{
+                "command": "code-save.removeHighlight",
+                "key": "ctrl+alt+k",
+                "mac": "shift+cmd+k"
+            }
+        ]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
